@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	tfe "github.com/hashicorp/go-tfe"
+	tfe "github.com/leg100/go-tfe"
 )
 
 func main() {
