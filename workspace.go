@@ -151,32 +151,32 @@ type workspaceReadme struct {
 
 // VCSRepo contains the configuration of a VCS integration.
 type VCSRepo struct {
-	Branch            string `jsonapi:"attr,branch"`
-	DisplayIdentifier string `jsonapi:"attr,display-identifier"`
-	Identifier        string `jsonapi:"attr,identifier"`
-	IngressSubmodules bool   `jsonapi:"attr,ingress-submodules"`
-	OAuthTokenID      string `jsonapi:"attr,oauth-token-id"`
-	RepositoryHTTPURL string `jsonapi:"attr,repository-http-url"`
-	ServiceProvider   string `jsonapi:"attr,service-provider"`
+	Branch            string `json:"branch"`
+	DisplayIdentifier string `json:"display-identifier"`
+	Identifier        string `json:"identifier"`
+	IngressSubmodules bool   `json:"ingress-submodules"`
+	OAuthTokenID      string `json:"oauth-token-id"`
+	RepositoryHTTPURL string `json:"repository-http-url"`
+	ServiceProvider   string `json:"service-provider"`
 }
 
 // WorkspaceActions represents the workspace actions.
 type WorkspaceActions struct {
-	IsDestroyable bool `jsonapi:"attr,is-destroyable"`
+	IsDestroyable bool `json:"is-destroyable"`
 }
 
 // WorkspacePermissions represents the workspace permissions.
 type WorkspacePermissions struct {
-	CanDestroy        bool `jsonapi:"attr,can-destroy"`
-	CanForceUnlock    bool `jsonapi:"attr,can-force-unlock"`
-	CanLock           bool `jsonapi:"attr,can-lock"`
-	CanQueueApply     bool `jsonapi:"attr,can-queue-apply"`
-	CanQueueDestroy   bool `jsonapi:"attr,can-queue-destroy"`
-	CanQueueRun       bool `jsonapi:"attr,can-queue-run"`
-	CanReadSettings   bool `jsonapi:"attr,can-read-settings"`
-	CanUnlock         bool `jsonapi:"attr,can-unlock"`
-	CanUpdate         bool `jsonapi:"attr,can-update"`
-	CanUpdateVariable bool `jsonapi:"attr,can-update-variable"`
+	CanDestroy        bool `json:"can-destroy"`
+	CanForceUnlock    bool `json:"can-force-unlock"`
+	CanLock           bool `json:"can-lock"`
+	CanQueueApply     bool `json:"can-queue-apply"`
+	CanQueueDestroy   bool `json:"can-queue-destroy"`
+	CanQueueRun       bool `json:"can-queue-run"`
+	CanReadSettings   bool `json:"can-read-settings"`
+	CanUnlock         bool `json:"can-unlock"`
+	CanUpdate         bool `json:"can-update"`
+	CanUpdateVariable bool `json:"can-update-variable"`
 }
 
 // WorkspaceReadOptions represents the options for reading a workspace.
