@@ -68,8 +68,8 @@ type StateVersion struct {
 // StateVersionListOptions represents the options for listing state versions.
 type StateVersionListOptions struct {
 	ListOptions
-	Organization *string `url:"filter[organization][name]"`
-	Workspace    *string `url:"filter[workspace][name]"`
+	Organization *string `schema:"filter[organization][name]"`
+	Workspace    *string `schema:"filter[workspace][name]"`
 }
 
 func (o StateVersionListOptions) valid() error {
@@ -169,7 +169,7 @@ func (s *stateVersions) Create(ctx context.Context, workspaceID string, options 
 
 // StateVersionReadOptions represents the options for reading state version.
 type StateVersionReadOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // Read a state version by its ID.
@@ -200,7 +200,7 @@ func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, e
 
 // StateVersionCurrentOptions represents the options for reading the current state version.
 type StateVersionCurrentOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // CurrentWithOptions reads the latest available state from the given workspace using the options supplied.

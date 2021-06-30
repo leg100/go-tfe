@@ -58,7 +58,7 @@ type RunTrigger struct {
 // run triggers.
 type RunTriggerListOptions struct {
 	ListOptions
-	RunTriggerType *string `url:"filter[run-trigger][type]"`
+	RunTriggerType *string `schema:"filter[run-trigger][type]"`
 }
 
 func (o RunTriggerListOptions) valid() error {

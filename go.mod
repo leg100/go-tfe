@@ -2,7 +2,7 @@ module github.com/leg100/go-tfe
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/google/go-querystring v1.0.0
+	github.com/gorilla/schema v1.2.0
 	github.com/hashicorp/go-cleanhttp v0.5.0
 	github.com/hashicorp/go-retryablehttp v0.5.2
 	github.com/hashicorp/go-slug v0.4.1

@@ -61,7 +61,7 @@ func (s *teamMembers) ListUsers(ctx context.Context, teamID string) ([]*User, er
 	}
 
 	options := struct {
-		Include string `url:"include"`
+		Include string `schema:"include"`
 	}{
 		Include: "users",
 	}
@@ -88,7 +88,7 @@ func (s *teamMembers) ListOrganizationMemberships(ctx context.Context, teamID st
 	}
 
 	options := struct {
-		Include string `url:"include"`
+		Include string `schema:"include"`
 	}{
 		Include: "organization-memberships",
 	}

@@ -70,11 +70,11 @@ type AdminOrganizationListOptions struct {
 
 	// A query string used to filter organizations.
 	// Any organizations with a name or notification email partially matching this value will be returned.
-	Query *string `url:"q,omitempty"`
+	Query *string `schema:"q,omitempty"`
 
 	// A list of relations to include. See available resources
 	// https://www.terraform.io/docs/cloud/api/admin/organizations.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `schema:"include"`
 }
 
 // List all the organizations visible to the current user.

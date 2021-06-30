@@ -53,9 +53,9 @@ type AdminRunsList struct {
 type AdminRunsListOptions struct {
 	ListOptions
 
-	RunStatus *string `url:"filter[status],omitempty"`
-	Query     *string `url:"q,omitempty"`
-	Include   *string `url:"include,omitempty"`
+	RunStatus *string `schema:"filter[status],omitempty"`
+	Query     *string `schema:"q,omitempty"`
+	Include   *string `schema:"include,omitempty"`
 }
 
 // List all the runs of the terraform enterprise installation.

@@ -181,7 +181,7 @@ type WorkspacePermissions struct {
 
 // WorkspaceReadOptions represents the options for reading a workspace.
 type WorkspaceReadOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // WorkspaceListOptions represents the options for listing workspaces.
@@ -189,10 +189,10 @@ type WorkspaceListOptions struct {
 	ListOptions
 
 	// A search string (partial workspace name) used to filter the results.
-	Search *string `url:"search[name],omitempty"`
+	Search *string `schema:"search[name],omitempty"`
 
 	// A list of relations to include. See available resources https://www.terraform.io/docs/cloud/api/workspaces.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `schema:"include"`
 }
 
 // List all the workspaces within an organization.

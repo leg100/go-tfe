@@ -160,7 +160,7 @@ type RunListOptions struct {
 
 	// A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/run.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `schema:"include"`
 }
 
 // List all the runs of the given workspace.
@@ -268,7 +268,7 @@ func (s *runs) Read(ctx context.Context, runID string) (*Run, error) {
 
 // RunReadOptions represents the options for reading a run.
 type RunReadOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // Read a run by its ID with the given options.

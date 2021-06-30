@@ -100,7 +100,7 @@ type CVStatusTimestamps struct {
 
 // ConfigurationVersionReadOptions represents the options for reading a configuration version.
 type ConfigurationVersionReadOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // ConfigurationVersionListOptions represents the options for listing
@@ -110,7 +110,7 @@ type ConfigurationVersionListOptions struct {
 
 	// A list of relations to include. See available resources:
 	// https://www.terraform.io/docs/cloud/api/configuration-versions.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `schema:"include"`
 }
 
 // IngressAttributes include commit information associated with configuration versions sourced from VCS.

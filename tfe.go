@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-querystring/query"
+	"github.com/gorilla/schema"
 	"github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/hashicorp/jsonapi"
@@ -38,6 +38,9 @@ const (
 	// PingEndpoint is a no-op API endpoint used to configure the rate limiter
 	PingEndpoint = "ping"
 )
+
+// Query schema encoder, caches structs, and safe for sharing
+var encoder = schema.NewEncoder()
 
 // RetryLogHook allows a function to run before each retry.
 type RetryLogHook func(attemptNum int, resp *http.Response)
@@ -463,8 +466,8 @@ func (c *Client) newRequest(method, path string, v interface{}) (*retryablehttp.
 		reqHeaders.Set("Accept", "application/vnd.api+json")
 
 		if v != nil {
-			q, err := query.Values(v)
-			if err != nil {
+			q := url.Values{}
+			if err := encoder.Encode(v, q); err != nil {
 				return nil, err
 			}
 			u.RawQuery = q.Encode()
@@ -676,10 +679,10 @@ func unmarshalResponse(responseBody io.Reader, model interface{}) error {
 // Pagination allows breaking up large result sets into chunks, or "pages".
 type ListOptions struct {
 	// The page number to request. The results vary based on the PageSize.
-	PageNumber int `url:"page[number],omitempty"`
+	PageNumber int `schema:"page[number],omitempty"`
 
 	// The number of elements returned in a single page.
-	PageSize int `url:"page[size],omitempty"`
+	PageSize int `schema:"page[size],omitempty"`
 }
 
 // Pagination is used to return the pagination details of an API request.

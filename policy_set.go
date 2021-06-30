@@ -93,7 +93,7 @@ type PolicySetListOptions struct {
 	ListOptions
 
 	// A search string (partial policy set name) used to filter the results.
-	Search *string `url:"search[name],omitempty"`
+	Search *string `schema:"search[name],omitempty"`
 }
 
 // List all the policies for a given organization.
@@ -191,7 +191,7 @@ func (s *policySets) Create(ctx context.Context, organization string, options Po
 // For a full list of relations, please see:
 // https://www.terraform.io/docs/cloud/api/policy-sets.html#relationships
 type PolicySetReadOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // Read a policy set by its ID.

@@ -51,11 +51,11 @@ type AdminWorkspaceListOptions struct {
 
 	// A query string (partial workspace name) used to filter the results.
 	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#query-parameters
-	Query *string `url:"q,omitempty"`
+	Query *string `schema:"q,omitempty"`
 
 	// A list of relations to include. See available resources
 	// https://www.terraform.io/docs/cloud/api/admin/workspaces.html#available-related-resources
-	Include *string `url:"include"`
+	Include *string `schema:"include"`
 }
 
 // AdminWorkspaceList represents a list of workspaces.

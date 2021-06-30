@@ -68,7 +68,7 @@ type OrganizationMembership struct {
 type OrganizationMembershipListOptions struct {
 	ListOptions
 
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // List all the organization memberships of the given organization.
@@ -142,7 +142,7 @@ func (s *organizationMemberships) Read(ctx context.Context, organizationMembersh
 
 // OrganizationMembershipReadOptions represents the options for reading organization memberships.
 type OrganizationMembershipReadOptions struct {
-	Include string `url:"include"`
+	Include string `schema:"include"`
 }
 
 // Read an organization membership by ID with options
