@@ -19,7 +19,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/hashicorp/go-cleanhttp"
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
-	"github.com/hashicorp/jsonapi"
+	"github.com/leg100/jsonapi"
 	"golang.org/x/time/rate"
 
 	slug "github.com/hashicorp/go-slug"
