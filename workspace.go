@@ -327,6 +327,9 @@ func (o WorkspaceCreateOptions) Valid() error {
 	if !validStringID(o.Name) {
 		return ErrInvalidName
 	}
+	if o.TerraformVersion != nil && !validSemanticVersion(*o.TerraformVersion) {
+		return ErrInvalidTerraformVersion
+	}
 	if o.Operations != nil && o.ExecutionMode != nil {
 		return errors.New("operations is deprecated and cannot be specified when execution mode is used")
 	}
@@ -536,6 +539,9 @@ type WorkspaceUpdateOptions struct {
 func (o WorkspaceUpdateOptions) Valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
+	}
+	if o.TerraformVersion != nil && !validSemanticVersion(*o.TerraformVersion) {
+		return ErrInvalidTerraformVersion
 	}
 	if o.Operations != nil && o.ExecutionMode != nil {
 		return errors.New("operations is deprecated and cannot be specified when execution mode is used")

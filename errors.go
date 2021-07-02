@@ -98,4 +98,8 @@ var (
 
 	// ErrInvalidTerraformVersionType is returned when the type is not valid.
 	ErrInvalidTerraformVersionType = errors.New("invalid type for terraform version. Please use 'terraform-version'")
+
+	// ErrInvalidTerraformVersion is returned when a terraform version string is
+	// not a semantic version string (major.minor.patch).
+	ErrInvalidTerraformVersion = errors.New("invalid terraform version")
 )
