@@ -320,7 +320,7 @@ type VCSRepoOptions struct {
 	OAuthTokenID      *string `json:"oauth-token-id,omitempty"`
 }
 
-func (o WorkspaceCreateOptions) valid() error {
+func (o WorkspaceCreateOptions) Valid() error {
 	if !validString(o.Name) {
 		return ErrRequiredName
 	}
@@ -345,7 +345,7 @@ func (s *workspaces) Create(ctx context.Context, organization string, options Wo
 	if !validStringID(&organization) {
 		return nil, ErrInvalidOrg
 	}
-	if err := options.valid(); err != nil {
+	if err := options.Valid(); err != nil {
 		return nil, err
 	}
 
@@ -533,7 +533,7 @@ type WorkspaceUpdateOptions struct {
 	WorkingDirectory *string `jsonapi:"attr,working-directory,omitempty"`
 }
 
-func (o WorkspaceUpdateOptions) valid() error {
+func (o WorkspaceUpdateOptions) Valid() error {
 	if o.Name != nil && !validStringID(o.Name) {
 		return ErrInvalidName
 	}
@@ -555,7 +555,7 @@ func (s *workspaces) Update(ctx context.Context, organization, workspace string,
 	if !validStringID(&workspace) {
 		return nil, ErrInvalidWorkspaceValue
 	}
-	if err := options.valid(); err != nil {
+	if err := options.Valid(); err != nil {
 		return nil, err
 	}
 

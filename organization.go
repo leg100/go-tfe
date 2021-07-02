@@ -171,7 +171,7 @@ type OrganizationCreateOptions struct {
 	OwnersTeamSAMLRoleID *string `jsonapi:"attr,owners-team-saml-role-id,omitempty"`
 }
 
-func (o OrganizationCreateOptions) valid() error {
+func (o OrganizationCreateOptions) Valid() error {
 	if !validString(o.Name) {
 		return ErrRequiredName
 	}
@@ -186,7 +186,7 @@ func (o OrganizationCreateOptions) valid() error {
 
 // Create a new organization with the given options.
 func (s *organizations) Create(ctx context.Context, options OrganizationCreateOptions) (*Organization, error) {
-	if err := options.valid(); err != nil {
+	if err := options.Valid(); err != nil {
 		return nil, err
 	}
 
