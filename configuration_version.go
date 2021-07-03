@@ -31,7 +31,7 @@ type ConfigurationVersions interface {
 	Read(ctx context.Context, cvID string) (*ConfigurationVersion, error)
 
 	// ReadWithOptions reads a configuration version by its ID using the options supplied
-	ReadWithOptions(ctx context.Context, cvID string, options *ConfigurationVersionReadOptions) (*ConfigurationVersion, error)
+	ReadWithOptions(ctx context.Context, cvID string, options ConfigurationVersionReadOptions) (*ConfigurationVersion, error)
 
 	// Upload packages and uploads Terraform configuration files. It requires
 	// the upload URL from a configuration version and the full path to the
@@ -199,11 +199,11 @@ func (s *configurationVersions) Create(ctx context.Context, workspaceID string, 
 
 // Read a configuration version by its ID.
 func (s *configurationVersions) Read(ctx context.Context, cvID string) (*ConfigurationVersion, error) {
-	return s.ReadWithOptions(ctx, cvID, nil)
+	return s.ReadWithOptions(ctx, cvID, ConfigurationVersionReadOptions{})
 }
 
 // Read a configuration version by its ID with the given options.
-func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string, options *ConfigurationVersionReadOptions) (*ConfigurationVersion, error) {
+func (s *configurationVersions) ReadWithOptions(ctx context.Context, cvID string, options ConfigurationVersionReadOptions) (*ConfigurationVersion, error) {
 	if !validStringID(&cvID) {
 		return nil, ErrInvalidConfigVersionID
 	}

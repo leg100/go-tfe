@@ -24,7 +24,7 @@ func TestStateVersionOutputsRead(t *testing.T) {
 	// give TFC some time to process the statefile and extract the outputs.
 	time.Sleep(waitForStateVersionOutputs)
 
-	curOpts := &StateVersionCurrentOptions{
+	curOpts := StateVersionCurrentOptions{
 		Include: "outputs",
 	}
 

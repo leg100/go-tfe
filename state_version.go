@@ -28,13 +28,13 @@ type StateVersions interface {
 	Read(ctx context.Context, svID string) (*StateVersion, error)
 
 	// ReadWithOptions reads a state version by its ID using the options supplied
-	ReadWithOptions(ctx context.Context, svID string, options *StateVersionReadOptions) (*StateVersion, error)
+	ReadWithOptions(ctx context.Context, svID string, options StateVersionReadOptions) (*StateVersion, error)
 
 	// Current reads the latest available state from the given workspace.
 	Current(ctx context.Context, workspaceID string) (*StateVersion, error)
 
 	// CurrentWithOptions reads the latest available state from the given workspace using the options supplied
-	CurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error)
+	CurrentWithOptions(ctx context.Context, workspaceID string, options StateVersionCurrentOptions) (*StateVersion, error)
 
 	// Download retrieves the actual stored state of a state version
 	Download(ctx context.Context, url string) ([]byte, error)
@@ -173,7 +173,7 @@ type StateVersionReadOptions struct {
 }
 
 // Read a state version by its ID.
-func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, options *StateVersionReadOptions) (*StateVersion, error) {
+func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, options StateVersionReadOptions) (*StateVersion, error) {
 	if !validStringID(&svID) {
 		return nil, errors.New("invalid value for state version ID")
 	}
@@ -195,7 +195,7 @@ func (s *stateVersions) ReadWithOptions(ctx context.Context, svID string, option
 
 // Read a state version by its ID.
 func (s *stateVersions) Read(ctx context.Context, svID string) (*StateVersion, error) {
-	return s.ReadWithOptions(ctx, svID, nil)
+	return s.ReadWithOptions(ctx, svID, StateVersionReadOptions{})
 }
 
 // StateVersionCurrentOptions represents the options for reading the current state version.
@@ -204,7 +204,7 @@ type StateVersionCurrentOptions struct {
 }
 
 // CurrentWithOptions reads the latest available state from the given workspace using the options supplied.
-func (s *stateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options *StateVersionCurrentOptions) (*StateVersion, error) {
+func (s *stateVersions) CurrentWithOptions(ctx context.Context, workspaceID string, options StateVersionCurrentOptions) (*StateVersion, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
@@ -226,7 +226,7 @@ func (s *stateVersions) CurrentWithOptions(ctx context.Context, workspaceID stri
 
 // Current reads the latest available state from the given workspace.
 func (s *stateVersions) Current(ctx context.Context, workspaceID string) (*StateVersion, error) {
-	return s.CurrentWithOptions(ctx, workspaceID, nil)
+	return s.CurrentWithOptions(ctx, workspaceID, StateVersionCurrentOptions{})
 }
 
 // Download retrieves the actual stored state of a state version

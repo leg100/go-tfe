@@ -157,7 +157,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 	// Hack: Wait for TFC to ingress the configuration and queue a run
 	time.Sleep(3 * time.Second)
 
-	w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, &WorkspaceReadOptions{
+	w, err := client.Workspaces.ReadByIDWithOptions(ctx, wTest.ID, WorkspaceReadOptions{
 		Include: "current-run.configuration-version",
 	})
 
@@ -172,7 +172,7 @@ func TestConfigurationVersionsReadWithOptions(t *testing.T) {
 	cv := w.CurrentRun.ConfigurationVersion
 
 	t.Run("when the configuration version exists", func(t *testing.T) {
-		options := &ConfigurationVersionReadOptions{
+		options := ConfigurationVersionReadOptions{
 			Include: "ingress-attributes",
 		}
 

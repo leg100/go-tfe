@@ -307,7 +307,7 @@ func TestStateVersionsReadWithOptions(t *testing.T) {
 	time.Sleep(waitForStateVersionOutputs)
 
 	t.Run("when the state version exists", func(t *testing.T) {
-		curOpts := &StateVersionReadOptions{
+		curOpts := StateVersionReadOptions{
 			Include: "outputs",
 		}
 
@@ -375,7 +375,7 @@ func TestStateVersionsCurrentWithOptions(t *testing.T) {
 	time.Sleep(waitForStateVersionOutputs)
 
 	t.Run("when the state version exists", func(t *testing.T) {
-		curOpts := &StateVersionCurrentOptions{
+		curOpts := StateVersionCurrentOptions{
 			Include: "outputs",
 		}
 

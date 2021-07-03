@@ -34,7 +34,7 @@ type Workspaces interface {
 	ReadByID(ctx context.Context, workspaceID string) (*Workspace, error)
 
 	// ReadByIDWithOptions reads a workspace by its ID with the given options.
-	ReadByIDWithOptions(ctx context.Context, workspaceID string, options *WorkspaceReadOptions) (*Workspace, error)
+	ReadByIDWithOptions(ctx context.Context, workspaceID string, options WorkspaceReadOptions) (*Workspace, error)
 
 	// Update settings of an existing workspace.
 	Update(ctx context.Context, organization string, workspace string, options WorkspaceUpdateOptions) (*Workspace, error)
@@ -401,11 +401,11 @@ func (s *workspaces) Read(ctx context.Context, organization, workspace string) (
 
 // ReadByID reads a workspace by its ID.
 func (s *workspaces) ReadByID(ctx context.Context, workspaceID string) (*Workspace, error) {
-	return s.ReadByIDWithOptions(ctx, workspaceID, nil)
+	return s.ReadByIDWithOptions(ctx, workspaceID, WorkspaceReadOptions{})
 }
 
 // ReadByIDWithOptions reads a workspace by its ID with the given options.
-func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string, options *WorkspaceReadOptions) (*Workspace, error) {
+func (s *workspaces) ReadByIDWithOptions(ctx context.Context, workspaceID string, options WorkspaceReadOptions) (*Workspace, error) {
 	if !validStringID(&workspaceID) {
 		return nil, ErrInvalidWorkspaceID
 	}
