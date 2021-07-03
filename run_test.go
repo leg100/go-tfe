@@ -197,7 +197,7 @@ func TestRunsReadWithOptions(t *testing.T) {
 	defer rTestCleanup()
 
 	t.Run("when the run exists", func(t *testing.T) {
-		curOpts := &RunReadOptions{
+		curOpts := RunReadOptions{
 			Include: "created_by",
 		}
 
