@@ -5,7 +5,7 @@ require (
 	github.com/gorilla/schema v1.2.0
 	github.com/hashicorp/go-cleanhttp v0.5.0
 	github.com/hashicorp/go-retryablehttp v0.5.2
-	github.com/hashicorp/go-slug v0.4.1
+	github.com/hashicorp/go-slug v0.7.0
 	github.com/hashicorp/go-uuid v1.0.1
 	github.com/leg100/jsonapi v1.0.1-0.20210702195956-33ced97bb77e // indirect
 	github.com/stretchr/testify v1.3.0
