@@ -66,12 +66,12 @@ type Plan struct {
 
 // PlanStatusTimestamps holds the timestamps for individual plan statuses.
 type PlanStatusTimestamps struct {
-	CanceledAt      time.Time `json:"canceled-at,rfc3339"`
-	ErroredAt       time.Time `json:"errored-at,rfc3339"`
-	FinishedAt      time.Time `json:"finished-at,rfc3339"`
-	ForceCanceledAt time.Time `json:"force-canceled-at,rfc3339"`
-	QueuedAt        time.Time `json:"queued-at,rfc3339"`
-	StartedAt       time.Time `json:"started-at,rfc3339"`
+	CanceledAt      *time.Time `json:"canceled-at,rfc3339,omitempty"`
+	ErroredAt       *time.Time `json:"errored-at,rfc3339,omitempty"`
+	FinishedAt      *time.Time `json:"finished-at,rfc3339,omitempty"`
+	ForceCanceledAt *time.Time `json:"force-canceled-at,rfc3339,omitempty"`
+	QueuedAt        *time.Time `json:"queued-at,rfc3339,omitempty"`
+	StartedAt       *time.Time `json:"started-at,rfc3339,omitempty"`
 }
 
 // Read a plan by its ID.

@@ -273,6 +273,6 @@ func TestConfigurationVersions_Unmarshal(t *testing.T) {
 	assert.Equal(t, cv.ErrorMessage, "message")
 	assert.Equal(t, cv.Source, ConfigurationSourceTerraform)
 	assert.Equal(t, cv.Status, ConfigurationUploaded)
-	assert.Equal(t, cv.StatusTimestamps.FinishedAt, finishedParsedTime)
-	assert.Equal(t, cv.StatusTimestamps.StartedAt, startedParsedTime)
+	assert.Equal(t, cv.StatusTimestamps.FinishedAt, &finishedParsedTime)
+	assert.Equal(t, cv.StatusTimestamps.StartedAt, &startedParsedTime)
 }

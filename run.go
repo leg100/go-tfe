@@ -135,23 +135,23 @@ type RunPermissions struct {
 
 // RunStatusTimestamps holds the timestamps for individual run statuses.
 type RunStatusTimestamps struct {
-	AppliedAt            time.Time `json:"applied-at,rfc3339"`
-	ApplyQueuedAt        time.Time `json:"apply-queued-at,rfc3339"`
-	ApplyingAt           time.Time `json:"applying-at,rfc3339"`
-	CanceledAt           time.Time `json:"canceled-at,rfc3339"`
-	ConfirmedAt          time.Time `json:"confirmed-at,rfc3339"`
-	CostEstimatedAt      time.Time `json:"cost-estimated-at,rfc3339"`
-	CostEstimatingAt     time.Time `json:"cost-estimating-at,rfc3339"`
-	DiscardedAt          time.Time `json:"discarded-at,rfc3339"`
-	ErroredAt            time.Time `json:"errored-at,rfc3339"`
-	ForceCanceledAt      time.Time `json:"force-canceled-at,rfc3339"`
-	PlanQueueableAt      time.Time `json:"plan-queueable-at,rfc3339"`
-	PlanQueuedAt         time.Time `json:"plan-queued-at,rfc3339"`
-	PlannedAndFinishedAt time.Time `json:"planned-and-finished-at,rfc3339"`
-	PlannedAt            time.Time `json:"planned-at,rfc3339"`
-	PlanningAt           time.Time `json:"planning-at,rfc3339"`
-	PolicyCheckedAt      time.Time `json:"policy-checked-at,rfc3339"`
-	PolicySoftFailedAt   time.Time `json:"policy-soft-failed-at,rfc3339"`
+	AppliedAt            *time.Time `json:"applied-at,rfc3339,omitempty"`
+	ApplyQueuedAt        *time.Time `json:"apply-queued-at,rfc3339,omitempty"`
+	ApplyingAt           *time.Time `json:"applying-at,rfc3339,omitempty"`
+	CanceledAt           *time.Time `json:"canceled-at,rfc3339,omitempty"`
+	ConfirmedAt          *time.Time `json:"confirmed-at,rfc3339,omitempty"`
+	CostEstimatedAt      *time.Time `json:"cost-estimated-at,rfc3339,omitempty"`
+	CostEstimatingAt     *time.Time `json:"cost-estimating-at,rfc3339,omitempty"`
+	DiscardedAt          *time.Time `json:"discarded-at,rfc3339,omitempty"`
+	ErroredAt            *time.Time `json:"errored-at,rfc3339,omitempty"`
+	ForceCanceledAt      *time.Time `json:"force-canceled-at,rfc3339,omitempty"`
+	PlanQueueableAt      *time.Time `json:"plan-queueable-at,rfc3339,omitempty"`
+	PlanQueuedAt         *time.Time `json:"plan-queued-at,rfc3339,omitempty"`
+	PlannedAndFinishedAt *time.Time `json:"planned-and-finished-at,rfc3339,omitempty"`
+	PlannedAt            *time.Time `json:"planned-at,rfc3339,omitempty"`
+	PlanningAt           *time.Time `json:"planning-at,rfc3339,omitempty"`
+	PolicyCheckedAt      *time.Time `json:"policy-checked-at,rfc3339,omitempty"`
+	PolicySoftFailedAt   *time.Time `json:"policy-soft-failed-at,rfc3339,omitempty"`
 }
 
 // RunListOptions represents the options for listing runs.
