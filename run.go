@@ -8,8 +8,13 @@ import (
 	"time"
 )
 
-// Compile-time proof of interface implementation.
-var _ Runs = (*runs)(nil)
+var (
+	// Compile-time proof of interface implementation.
+	_ Runs = (*runs)(nil)
+
+	PlanBinaryFormat = "binary"
+	PlanJSONFormat   = "json"
+)
 
 // Runs describes all the run related methods that the Terraform Enterprise
 // API supports.
@@ -39,6 +44,9 @@ type Runs interface {
 
 	// Discard a run by its ID.
 	Discard(ctx context.Context, runID string, options RunDiscardOptions) error
+
+	// UploadPlan uploads a plan file for a run by its ID
+	UploadPlan(ctx context.Context, runID string, plan []byte, format RunUploadPlanOptions) error
 }
 
 // runs implements Runs.
@@ -369,6 +377,33 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 
 	u := fmt.Sprintf("runs/%s/actions/discard", url.QueryEscape(runID))
 	req, err := s.client.newRequest("POST", u, &options)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// RunUploadPlanOptions represents the options for uploading a plan file for a
+// run.
+type RunUploadPlanOptions struct {
+	// Format of plan file. Valid values are json and binary.
+	Format string `schema:"format"`
+}
+
+// UploadPlan uploads a plan file.
+func (s *runs) UploadPlan(ctx context.Context, runID string, plan []byte, options RunUploadPlanOptions) error {
+	q := url.Values{}
+	if err := encoder.Encode(options, q); err != nil {
+		return err
+	}
+
+	u := url.URL{
+		Path:     fmt.Sprintf("/runs/%s/plan/upload", url.QueryEscape(runID)),
+		RawQuery: q.Encode(),
+	}
+
+	req, err := s.client.newRequest("PUT", u.String(), plan)
 	if err != nil {
 		return err
 	}

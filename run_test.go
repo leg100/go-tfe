@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -363,6 +366,59 @@ func TestRunsDiscard(t *testing.T) {
 		err := client.Runs.Discard(ctx, badIdentifier, RunDiscardOptions{})
 		assert.EqualError(t, err, ErrInvalidRunID.Error())
 	})
+}
+
+func TestRunsUploadPlan(t *testing.T) {
+	tests := []struct {
+		name     string
+		format   string
+		wantURL  string
+		wantBody string
+	}{
+		{
+			name:     "binary plan",
+			format:   PlanBinaryFormat,
+			wantURL:  "/runs/run-123/plan/upload?format=binary",
+			wantBody: "dummy binary",
+		},
+		{
+			name:     "json plan",
+			format:   PlanJSONFormat,
+			wantURL:  "/runs/run-123/plan/upload?format=json",
+			wantBody: "dummy json",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			server := httptest.NewTLSServer(
+				http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					switch r.RequestURI {
+					case tt.wantURL:
+						// Assert POST body is what we expect
+						buf := new(bytes.Buffer)
+						if _, err := io.Copy(buf, r.Body); err != nil {
+							assert.Equal(t, tt.wantBody, buf.String())
+							return
+						}
+						return
+					case "/api/v2/ping":
+						return
+					default:
+						assert.Fail(t, "invalid request URI", "URI", r.RequestURI)
+					}
+				}))
+			defer server.Close()
+
+			ctx := context.Background()
+
+			client, err := NewClient(&Config{Address: server.URL, Token: "123", HTTPClient: server.Client()})
+			require.NoError(t, err)
+
+			err = client.Runs.UploadPlan(ctx, "run-123", []byte(tt.wantBody), RunUploadPlanOptions{Format: tt.format})
+			assert.NoError(t, err)
+		})
+	}
 }
 
 func TestRun_Unmarshal(t *testing.T) {
