@@ -368,7 +368,32 @@ func TestRunsDiscard(t *testing.T) {
 	})
 }
 
-func TestRunsUploadPlan(t *testing.T) {
+func TestRunsGetPlanFile_Real(t *testing.T) {
+	client := testClient(t)
+	ctx := context.Background()
+
+	rTest, rTestCleanup := createPlannedRun(t, client, nil)
+	defer rTestCleanup()
+
+	t.Run("get json plan file", func(t *testing.T) {
+		planFile, err := client.Runs.GetPlanFile(ctx, rTest.ID, PlanFileOptions{Format: PlanJSONFormat})
+		require.NoError(t, err)
+
+		// Check plan file is valid JSON and has at least some expected keys
+		var got map[string]interface{}
+		require.NoError(t, json.Unmarshal(planFile, &got))
+		assert.Contains(t, got, "resource_changes")
+	})
+
+	t.Run("get binary plan file", func(t *testing.T) {
+		planFile, err := client.Runs.GetPlanFile(ctx, rTest.ID, PlanFileOptions{Format: PlanBinaryFormat})
+		require.NoError(t, err)
+
+		assert.NotEmpty(t, planFile)
+	})
+}
+
+func TestRunsUploadPlanFile(t *testing.T) {
 	tests := []struct {
 		name     string
 		format   string
@@ -378,13 +403,13 @@ func TestRunsUploadPlan(t *testing.T) {
 		{
 			name:     "binary plan",
 			format:   PlanBinaryFormat,
-			wantURL:  "/runs/run-123/plan/upload?format=binary",
+			wantURL:  "/runs/run-123/plan?format=binary",
 			wantBody: "dummy binary",
 		},
 		{
 			name:     "json plan",
 			format:   PlanJSONFormat,
-			wantURL:  "/runs/run-123/plan/upload?format=json",
+			wantURL:  "/runs/run-123/plan?format=json",
 			wantBody: "dummy json",
 		},
 	}
@@ -397,13 +422,10 @@ func TestRunsUploadPlan(t *testing.T) {
 					case tt.wantURL:
 						// Assert POST body is what we expect
 						buf := new(bytes.Buffer)
-						if _, err := io.Copy(buf, r.Body); err != nil {
-							assert.Equal(t, tt.wantBody, buf.String())
-							return
-						}
-						return
+						_, err := io.Copy(buf, r.Body)
+						require.NoError(t, err)
+						assert.Equal(t, tt.wantBody, buf.String())
 					case "/api/v2/ping":
-						return
 					default:
 						assert.Fail(t, "invalid request URI", "URI", r.RequestURI)
 					}
@@ -415,7 +437,57 @@ func TestRunsUploadPlan(t *testing.T) {
 			client, err := NewClient(&Config{Address: server.URL, Token: "123", HTTPClient: server.Client()})
 			require.NoError(t, err)
 
-			err = client.Runs.UploadPlan(ctx, "run-123", []byte(tt.wantBody), RunUploadPlanOptions{Format: tt.format})
+			err = client.Runs.UploadPlanFile(ctx, "run-123", []byte(tt.wantBody), PlanFileOptions{Format: tt.format})
+			assert.NoError(t, err)
+		})
+	}
+}
+
+func TestRunsUploadLogs(t *testing.T) {
+	tests := []struct {
+		name     string
+		opts     RunUploadLogsOptions
+		wantURL  string
+		wantBody string
+	}{
+		{
+			name:     "chunk",
+			opts:     RunUploadLogsOptions{},
+			wantURL:  "/runs/run-123/logs?end=false",
+			wantBody: "dummy logs",
+		},
+		{
+			name:     "end chunk",
+			opts:     RunUploadLogsOptions{End: true},
+			wantURL:  "/runs/run-123/logs?end=true",
+			wantBody: "dummy json",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			server := httptest.NewTLSServer(
+				http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					switch r.RequestURI {
+					case tt.wantURL:
+						// Assert PUT body is what we expect
+						buf := new(bytes.Buffer)
+						_, err := io.Copy(buf, r.Body)
+						require.NoError(t, err)
+						assert.Equal(t, tt.wantBody, buf.String())
+					case "/api/v2/ping":
+					default:
+						assert.Fail(t, "invalid request URI", "URI", r.RequestURI)
+					}
+				}))
+			defer server.Close()
+
+			ctx := context.Background()
+
+			client, err := NewClient(&Config{Address: server.URL, Token: "123", HTTPClient: server.Client()})
+			require.NoError(t, err)
+
+			err = client.Runs.UploadLogs(ctx, "run-123", []byte(tt.wantBody), tt.opts)
 			assert.NoError(t, err)
 		})
 	}

@@ -1,6 +1,7 @@
 package tfe
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -45,8 +46,14 @@ type Runs interface {
 	// Discard a run by its ID.
 	Discard(ctx context.Context, runID string, options RunDiscardOptions) error
 
-	// UploadPlan uploads a plan file for a run by its ID
-	UploadPlan(ctx context.Context, runID string, plan []byte, format RunUploadPlanOptions) error
+	// GetPlanFile gets the plan file for a run by its run ID
+	GetPlanFile(ctx context.Context, runID string, options PlanFileOptions) ([]byte, error)
+
+	// UploadPlanFile uploads the plan file for a run by its run ID
+	UploadPlanFile(ctx context.Context, runID string, plan []byte, options PlanFileOptions) error
+
+	// UploadLogs uploads logs for a run. For use by an agent rather than user.
+	UploadLogs(ctx context.Context, runID string, chunk []byte, options RunUploadLogsOptions) error
 }
 
 // runs implements Runs.
@@ -384,22 +391,64 @@ func (s *runs) Discard(ctx context.Context, runID string, options RunDiscardOpti
 	return s.client.do(ctx, req, nil)
 }
 
-// RunUploadPlanOptions represents the options for uploading a plan file for a
-// run.
-type RunUploadPlanOptions struct {
+// PlanFileOptions represents the options for getting the plan file for a run.
+type PlanFileOptions struct {
 	// Format of plan file. Valid values are json and binary.
 	Format string `schema:"format"`
 }
 
-// UploadPlan uploads a plan file.
-func (s *runs) UploadPlan(ctx context.Context, runID string, plan []byte, options RunUploadPlanOptions) error {
+// GetPlanFile gets the plan file for a run.
+func (s *runs) GetPlanFile(ctx context.Context, runID string, options PlanFileOptions) ([]byte, error) {
+	u := fmt.Sprintf("/runs/%s/plan", url.QueryEscape(runID))
+
+	req, err := s.client.newRequest("GET", u, options)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	if err := s.client.do(ctx, req, &buf); err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
+}
+
+// UploadPlan uploads the plan file for a run.
+func (s *runs) UploadPlanFile(ctx context.Context, runID string, plan []byte, options PlanFileOptions) error {
 	q := url.Values{}
 	if err := encoder.Encode(options, q); err != nil {
 		return err
 	}
 
 	u := url.URL{
-		Path:     fmt.Sprintf("/runs/%s/plan/upload", url.QueryEscape(runID)),
+		Path:     fmt.Sprintf("/runs/%s/plan", url.QueryEscape(runID)),
+		RawQuery: q.Encode(),
+	}
+
+	req, err := s.client.newRequest("PUT", u.String(), plan)
+	if err != nil {
+		return err
+	}
+
+	return s.client.do(ctx, req, nil)
+}
+
+// RunUploadLogsOptions represents the options for uploading logs for a run.
+type RunUploadLogsOptions struct {
+	// End indicates this is the last and final chunk
+	End bool `schema:"end"`
+}
+
+// UploadLogs uploads logs for a run.
+func (s *runs) UploadLogs(ctx context.Context, runID string, plan []byte, options RunUploadLogsOptions) error {
+	q := url.Values{}
+	if err := encoder.Encode(options, q); err != nil {
+		return err
+	}
+
+	u := url.URL{
+		Path:     fmt.Sprintf("/runs/%s/logs", url.QueryEscape(runID)),
 		RawQuery: q.Encode(),
 	}
 
