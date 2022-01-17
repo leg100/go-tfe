@@ -92,7 +92,7 @@ func TestWorkspacesList(t *testing.T) {
 
 		assert.NotEmpty(t, wl.Items)
 		assert.NotNil(t, wl.Items[0].Organization)
-		assert.NotEmpty(t, wl.Items[0].Organization.Email)
+		assert.NotEmpty(t, wl.Items[0].Organization.Name)
 	})
 }
 

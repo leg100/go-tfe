@@ -71,10 +71,11 @@ func TestOrganizationsCreate(t *testing.T) {
 		}()
 
 		assert.Equal(t, *options.Name, org.Name)
-		assert.Equal(t, *options.Email, org.Email)
 	})
 
 	t.Run("when no email is provided", func(t *testing.T) {
+		t.Skip("oTF organization doesn't require an email address")
+
 		org, err := client.Organizations.Create(ctx, OrganizationCreateOptions{
 			Name: String("foo"),
 		})
@@ -173,7 +174,6 @@ func TestOrganizationsUpdate(t *testing.T) {
 			refreshed,
 		} {
 			assert.Equal(t, *options.Name, item.Name)
-			assert.Equal(t, *options.Email, item.Email)
 			assert.Equal(t, *options.SessionTimeout, item.SessionTimeout)
 			assert.Equal(t, *options.SessionRemember, item.SessionRemember)
 		}
