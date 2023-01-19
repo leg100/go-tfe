@@ -116,7 +116,7 @@ func TestWorkspacesCreate(t *testing.T) {
 			SourceName:                 String("my-app"),
 			SourceURL:                  String("http://my-app-hostname.io"),
 			StructuredRunOutputEnabled: Bool(true),
-			TerraformVersion:           String("0.11.0"),
+			TerraformVersion:           String("1.2.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("bar/"),
 		}
@@ -371,7 +371,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			AutoApply:        Bool(true),
 			Operations:       Bool(true),
 			QueueAllRuns:     Bool(true),
-			TerraformVersion: String("0.10.0"),
+			TerraformVersion: String("1.2.0"),
 		}
 
 		wAfter, err := client.Workspaces.Update(ctx, orgTest.Name, wTest.Name, options)
@@ -396,7 +396,7 @@ func TestWorkspacesUpdate(t *testing.T) {
 			SpeculativeEnabled:         Bool(true),
 			Description:                String("updated description"),
 			StructuredRunOutputEnabled: Bool(true),
-			TerraformVersion:           String("0.11.1"),
+			TerraformVersion:           String("1.2.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
 		}
@@ -485,7 +485,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			AutoApply:        Bool(true),
 			Operations:       Bool(true),
 			QueueAllRuns:     Bool(true),
-			TerraformVersion: String("0.10.0"),
+			TerraformVersion: String("1.2.0"),
 		}
 
 		wAfter, err := client.Workspaces.UpdateByID(ctx, wTest.ID, options)
@@ -509,7 +509,7 @@ func TestWorkspacesUpdateByID(t *testing.T) {
 			QueueAllRuns:               Bool(false),
 			SpeculativeEnabled:         Bool(true),
 			StructuredRunOutputEnabled: Bool(true),
-			TerraformVersion:           String("0.11.1"),
+			TerraformVersion:           String("1.2.0"),
 			TriggerPrefixes:            []string{"/modules", "/shared"},
 			WorkingDirectory:           String("baz/"),
 		}
@@ -995,7 +995,6 @@ func TestWorkspaces_UpdateRemoteStateConsumers(t *testing.T) {
 		require.NoError(t, err)
 		assert.Equal(t, 1, len(rsc.Items))
 		assert.Contains(t, rsc.Items, wTestConsumer2)
-
 	})
 
 	t.Run("with invalid options", func(t *testing.T) {
